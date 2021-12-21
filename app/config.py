@@ -21,6 +21,9 @@ class Config:
     # Path to store the refresh token
     SPOTIFY_REFRESH_TOKEN_PATH = os.path.expanduser("~/.spotify_refresh_token")
 
+    # Image save path.
+    IMAGE_PATH = "spotify-banner.jpeg"
+
 
 class LoggerConfig:
     # File to store logs.
