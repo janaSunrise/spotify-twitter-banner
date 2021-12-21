@@ -74,7 +74,7 @@ def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, 
         for track in top_tracks
     ]
 
-    # Create an image of size - 1200x675
+    # Create an image.
     img = Image.new("RGB", (1500, 500), (18, 18, 18))
     draw = ImageDraw.Draw(img)
 
@@ -135,10 +135,7 @@ def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, 
 
     # Add title containing top tracks on top before displaying the top tracks.
     draw.text(
-        (
-            img.size[0] - 350,
-            50,
-        ),
+        (img.size[0] - 350, 50),
         "Top Tracks:",
         fill=white,
         font=poppins_semibold,
@@ -157,11 +154,11 @@ def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, 
             fill=(255, 255, 255),
         )
 
-        # Add the artist name, after explicit tag.
+        # Add the artist name.
         draw.text(
             (
                 img.size[0] - 350,
-                100 + (i * 50) + (i * 10) + 30,
+                100 + (i * 50) + (i * 10) + 35,
             ),
             track["artist"],
             font=fira_code_small,
@@ -213,6 +210,6 @@ def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, 
         )
 
     # Save the image to the path specified.
-    img.save(image_save_path, format="JPEG", quality=200)
+    img.save(image_save_path, format="JPEG", quality=100)
 
     return
