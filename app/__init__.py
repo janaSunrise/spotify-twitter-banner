@@ -2,7 +2,8 @@ import sys
 
 from loguru import logger
 
-from .config import LoggerConfig
+from .api.spotify import Spotify
+from .config import Config, LoggerConfig
 
 # Configure logging
 logger.configure(
@@ -20,3 +21,6 @@ logger.configure(
         ),
     ]
 )
+
+# Initialize the Spotify API.
+spotify = Spotify(Config.SPOTIFY_CLIENT_ID, Config.SPOTIFY_CLIENT_SECRET)
