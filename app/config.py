@@ -40,3 +40,20 @@ class LoggerConfig:
 
     # Rotation size.
     LOG_FILE_SIZE = "400 MB"
+
+
+class Fonts:
+    # Base font path
+    FONT_PATH = "app/assets/fonts/"
+
+    # Fira code
+    FIRA_REGULAR = FONT_PATH + "FiraCode-Regular.ttf"
+    FIRA_MEDIUM = FONT_PATH + "FiraCode-Medium.ttf"
+    FIRA_SEMIBOLD = FONT_PATH + "FiraCode-SemiBold.ttf"
+
+    # Poppins
+    POPPINS_REGULAR = FONT_PATH + "Poppins-Regular.ttf"
+    POPPINS_SEMIBOLD = FONT_PATH + "Poppins-SemiBold.ttf"
+
+    # Arial
+    ARIAL = FONT_PATH + "arial-unicode-ms.ttf"
