@@ -19,5 +19,6 @@ flake8-import-order = "*"
 pre-commit = "*"
 
 [scripts]
+start = "python -m app"
 precommit = "pre-commit install"
 lint = "pre-commit run --all-files"
