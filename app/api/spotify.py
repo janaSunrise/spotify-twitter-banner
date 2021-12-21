@@ -7,6 +7,7 @@ import typing as t
 import requests
 from loguru import logger
 
+from .route import Route
 from ..config import Config
 from ..utils import generate_oauth_url
 
@@ -106,3 +107,72 @@ class Spotify:
 
         # Return refresh token.
         return token["refresh_token"]
+
+    # Method to fetch the API.
+    def fetch(self, route: Route, **kwargs) -> t.Optional[dict]:
+        headers = kwargs.pop("headers", {})
+        data = kwargs.pop("data", None)
+
+        # Check if Authorization exists.
+        if "Authorization" not in headers:
+            # Check if bearer info exists.
+            if self.bearer_info is None:
+                self.bearer_info = self.get_bearer_info()
+
+            # Set the Authorization header.
+            headers["Authorization"] = f"Bearer {self.bearer_info['access_token']}"
+
+        headers = {
+            "User-Agent": self.USER_AGENT,
+            **headers
+        }
+
+        # Perform request with retries.
+        for _attempt in range(self.RETRY_ATTEMPTS):
+            # Fetch.
+            response = requests.request(route.method, route.url, headers=headers, json=data)
+
+            # Log code.
+            logger.debug(f"Fetch: [{route.method}] {route.url} | Code: {response.status_code}")
+
+            # Check if the request was successful.
+            if response.status_code == 200:
+                return response.json()
+
+            # Check if the request was a 429.
+            if response.status_code == 429:
+                # Get Retry-After header, and wait for it to clear.
+                retry_after = int(response.headers["Retry-After"])
+
+                # Wait for the Retry-After header to clear.
+                logger.info(f"Ratelimited. Waiting for {retry_after} seconds.")
+                time.sleep(retry_after)
+
+                # Retry.
+                continue
+
+            # Check if the request was a 401.
+            if response.status_code == 401:
+                # Get the bearer info.
+                logger.info("Bearer info expired. Refreshing.")
+                self.bearer_info = self.get_bearer_info()
+
+                # Retry.
+                continue
+
+            # Check if the request was a 404.
+            if response.status_code == 404:
+                # Return None.
+                logger.warning(f"Failed to fetch: {route.url}. Route not found.")
+                return None
+
+            # Ignore anything 5xx
+            if response.status_code >= 500:
+                continue
+
+    # Utility methods.
+    @staticmethod
+    def _form_url(url: str, data: dict) -> str:
+        url += "?" + "&".join([f"{dict_key}={dict_value}" for dict_key, dict_value in data.items()])
+
+        return url
