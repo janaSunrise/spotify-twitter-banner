@@ -2,7 +2,6 @@
 
 Dynamic Twitter banner, to show off your spotify status. Banner updated every 5 minutes.
 
-
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome. After cloning & setting up project locally, you can just submit

@@ -10,6 +10,13 @@ loguru = "*"
 python-decouple = "*"
 
 [dev-packages]
+flake8 = "*"
+flake8-annotations = "*"
+autopep8 = "*"
+flake8-bugbear = "*"
+flake8-import-order = "*"
+pre-commit = "*"
 
-[requires]
-python_version = "3.8"
+[scripts]
+precommit = "pre-commit install"
+lint = "pre-commit run --all-files"
