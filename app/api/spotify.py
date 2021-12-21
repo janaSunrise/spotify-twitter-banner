@@ -176,3 +176,57 @@ class Spotify:
         url += "?" + "&".join([f"{dict_key}={dict_value}" for dict_key, dict_value in data.items()])
 
         return url
+
+    # Currently playing.
+    def currently_playing(self) -> t.Optional[dict]:
+        route = Route("GET", "/me/player/currently-playing")
+
+        return self.fetch(route)
+
+    # Is playing?
+    def is_playing(self) -> bool:
+        return self.currently_playing() is not None and self.currently_playing()["is_playing"]
+
+    # Recently played.
+    def recently_played(
+        self, limit: int = 20, before: t.Optional[str] = None, after: t.Optional[str] = None
+    ) -> t.Optional[dict]:
+        data = {"limit": limit}
+
+        if before:
+            data["before"] = before
+
+        if after:
+            data["after"] = after
+
+        # Form the route
+        route = Route(
+            "GET",
+            self._form_url("/me/player/recently-played", data)
+        )
+
+        return self.fetch(route)
+
+    # Top songs.
+    def top_tracks(
+        self,
+        limit: int = 20,
+        offset: int = 0,
+        time_range: t.Optional[t.Literal["short_term", "medium_term", "long_term"]] = None
+    ) -> t.Optional[dict]:
+        # Add URL parameters.
+        data = {
+            "limit": limit,
+            "offset": offset
+        }
+
+        if time_range:
+            data["time_range"] = time_range
+
+        # Route.
+        route = Route(
+            "GET",
+            self._form_url("/me/top/tracks", data)
+        )
+
+        return self.fetch(route)
