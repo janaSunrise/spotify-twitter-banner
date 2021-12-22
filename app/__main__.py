@@ -41,6 +41,6 @@ while True:
     update_twitter_banner(twitter)
     logger.info("Updated twitter banner.")
 
-    # Sleep for 30 minutes.
+    # Sleep for 5 minutes.
     logger.info("Sleeping for 5 minutes.")
     time.sleep(5 * 60)

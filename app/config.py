@@ -14,10 +14,10 @@ class Config:
     TWITTER_ACCESS_TOKEN = config("TWITTER_ACCESS_TOKEN")
     TWITTER_ACCESS_TOKEN_SECRET = config("TWITTER_ACCESS_TOKEN_SECRET")
 
-    # Redirect URI
+    # Redirect URI -- Used for OAuth.
     SPOTIFY_REDIRECT_URI = "http://localhost:8888/callback"
 
-    # Spotify Scopes
+    # Spotify scopes
     SCOPES = [
         "user-read-currently-playing",
         "user-read-recently-played",
@@ -27,7 +27,7 @@ class Config:
     # Path to store the refresh token
     SPOTIFY_REFRESH_TOKEN_PATH = os.path.expanduser("~/.spotify_refresh_token")
 
-    # Image save path.
+    # Path to save the spotify banner image.
     IMAGE_PATH = "spotify-banner.jpeg"
 
 
@@ -38,13 +38,13 @@ class LoggerConfig:
     # Base level of logging.
     LOG_LEVEL = "INFO"
 
-    # Other config.
+    # Format of the log.
     LOG_FORMAT = (
         "<green>{time:YYYY-MM-DD hh:mm:ss}</green> | <level>{level: <8}</level> | "
         "<cyan>{name: <18}</cyan> | <level>{message}</level>"
     )
 
-    # Rotation size.
+    # File Rotation size.
     LOG_FILE_SIZE = "400 MB"
 
 

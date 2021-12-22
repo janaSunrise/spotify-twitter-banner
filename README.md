@@ -47,6 +47,7 @@ that the variables are set properly, and they work.
 Along with that, you can also change the interval of the banner update, in `__main__.py` where the `sleep` is run.
 
 To sum it up, Here is the workflow on setting up:
+
 - Install the dependencies.
 - Set up the Spotify API.
 - Set up the Twitter API.
