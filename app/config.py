@@ -51,7 +51,7 @@ class LoggerConfig:
     )
 
     # File Rotation size.
-    LOG_FILE_SIZE = "400 MB"
+    LOG_FILE_SIZE = "500 MB"
 
 
 class Fonts:
