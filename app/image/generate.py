@@ -103,21 +103,21 @@ def generate_image(
 
     draw.text(
         (400, 150),
-        truncate_text(song_name, poppins, 350),
+        truncate_text(song_name, poppins, 600),
         fill=white,
         font=poppins_semibold,
     )
 
     draw.text(
         (400, 200),
-        truncate_text(artist_name, poppins, 350),
+        truncate_text(artist_name, poppins, 600),
         fill=white,
         font=poppins,
     )
 
     draw.text(
         (400, 250),
-        truncate_text(album_name, poppins, 350),
+        truncate_text(album_name, poppins, 600),
         fill=white,
         font=poppins,
     )
