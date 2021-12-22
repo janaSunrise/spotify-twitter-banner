@@ -36,7 +36,7 @@ def draw_tag(draw: ImageDraw.Draw, x: int, y: int, text: str, font: ImageFont.Fr
     draw.text((x + 5, y + 5), text, font=font, fill=(0, 0, 0))
 
 
-def get_song_data(song: dict) -> dict:
+def get_song_data(song: dict) -> tuple:
     # Get the song type.
     currently_playing_type = song.get("currently_playing_type", "track")
 
@@ -61,7 +61,9 @@ def get_song_data(song: dict) -> dict:
     return song_name, f"By {artist_name}", img, is_explicit, f"On {album_name}"
 
 
-def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, image_save_path: str) -> None:
+def generate_image(
+        status: str, is_playing: bool, song: dict, top_tracks: list, image_save_path: str, show_only: bool = False
+) -> None:
     # Process the songs and top tracks.
     song_name, artist_name, song_image, is_explicit, album_name = get_song_data(song)
 
@@ -209,7 +211,11 @@ def generate_image(status: str, is_playing: bool, song: dict, top_tracks: list, 
             fill=(255, 255, 255),
         )
 
-    # Save the image to the path specified.
-    img.save(image_save_path, format="JPEG", quality=100)
+    # Show the image, if show only is enabled.
+    if show_only:
+        img.show()
+    else:
+        # Save the image to the path specified.
+        img.save(image_save_path, format="JPEG", quality=100)
 
     return

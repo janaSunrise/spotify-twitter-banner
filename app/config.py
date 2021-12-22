@@ -30,6 +30,12 @@ class Config:
     # Path to save the spotify banner image.
     IMAGE_PATH = "spotify-banner.jpeg"
 
+    # Status for the song info.
+    STATUS_MAPPING = {
+        True: ["Vibing to", "Binging to", "Listening to", "Obsessed with"],
+        False: ["Was listening to", "Previously binging to", "Was vibing to"]
+    }
+
 
 class LoggerConfig:
     # File to store logs.

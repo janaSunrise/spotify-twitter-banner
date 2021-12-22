@@ -1,3 +1,5 @@
+import json
+import os
 import sys
 
 import tweepy
@@ -31,3 +33,8 @@ auth = tweepy.OAuthHandler(Config.TWITTER_CONSUMER_KEY, Config.TWITTER_CONSUMER_
 auth.set_access_token(Config.TWITTER_ACCESS_TOKEN, Config.TWITTER_ACCESS_TOKEN_SECRET)
 
 twitter = tweepy.API(auth)
+
+# Initialize the app
+if not os.path.exists(Config.SPOTIFY_REFRESH_TOKEN_PATH):
+    with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "w") as f:
+        json.dump({}, f)

@@ -35,12 +35,12 @@ variables by renaming the `.env.example` file to `.env` with the respective valu
 
 Callback based authentication has been built into the App. If you're running for the first time, or the refresh
 token stored in the configuration file (`~/.spotify_refresh_token`) could not be discovered, you will be prompted
-to authenticate with Spotify. You'll be asked to open an URL, which redirects to the callback URL setup. Copy the
+to authenticate with Spotify. You'll be asked to open a URL, which redirects to the callback URL setup. Copy the
 code from the URL and paste it in the terminal.
 
 ### Configuration.
 
-All of the configuration for the app is located in the `config.py` file. To maintain clean configuration, They
+All the configuration for the app is located in the `config.py` file. To maintain clean configuration, They
 have been split into 3 classes. You can configure the settings in the config file, as you wish and also ensure
 that the variables are set properly, and they work.
 
@@ -63,10 +63,25 @@ pipenv run start
 
 And, you're all set!
 
+## 🛠 Development
+
+There are scripts located in the `scripts` directory meant for use during development stage, such as
+testing the generation of image, or uploading banner to twitter. Make sure of using them when developing
+the app. Use these to test the specific feature you have made change in.
+
+Here's how you can use them:
+
+- Activate the virtual environment using `pipenv shell`.
+- Run the specific script, you want to using `python -m scripts.<script-name>`. For example, to test the
+  image generation, you can run `python -m scripts.generate_image`.
+
+If you're interested in contributions, scroll down to the Contributing section. You can find more information
+about getting started.
+
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome. After cloning & setting up project locally, you can just submit
-a PR to this repo and it will be deployed once it's accepted.
+a PR to this repo, and it will be deployed once it's accepted.
 
 ⚠ It’s good to have descriptive commit messages, or PR titles so that other contributors can understand about your
 commit or the PR Created. Read [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/) before
