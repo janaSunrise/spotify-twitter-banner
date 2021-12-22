@@ -19,7 +19,6 @@ pipenv sync -d
 - Add `http://localhost:8888/callback` to the Callback URLs.
 - Take a note of the Client ID, and Client Secret for setting up `.env`
 
-
 ### Setting up Twitter API
 
 - Go to the developer panel [here](https://developer.twitter.com/).
@@ -29,19 +28,23 @@ pipenv sync -d
 
 ### Environmental variables
 
-To run this project, you will need to properly configure environmental variables. Configure the environmental variables by renaming the `.env.example` file to `.env` with the respective values.
+To run this project, you need to properly configure environmental variables. Configure the environmental
+variables by renaming the `.env.example` file to `.env` with the respective values.
 
 ### Authentication with Spotify
 
-Callback based authentication has been built in the App. Once you run, If there is no refresh token or any file
-`~/.spotify_refresh_token`, you will be prompted to authenticate with Spotify. You'll be asked to open an URL,
-which redirects to the callback URL setup. Copy the code from the URL and paste it in the terminal.
+Callback based authentication has been built into the App. If you're running for the first time, or the refresh
+token stored in the configuration file (`~/.spotify_refresh_token`) could not be discovered, you will be prompted
+to authenticate with Spotify. You'll be asked to open an URL, which redirects to the callback URL setup. Copy the
+code from the URL and paste it in the terminal.
 
 ### Configuration.
 
-All of the configuration has been split into 3 classes in `config.py`. You can modify the changes as you like,
-but you need to ensure to change variables globally, and ensure they work. Along with that, You can change the
-interval of the banner update, in `__main__.py` where the `sleep` is run.
+All of the configuration for the app is located in the `config.py` file. To maintain clean configuration, They
+have been split into 3 classes. You can configure the settings in the config file, as you wish and also ensure
+that the variables are set properly, and they work.
+
+Along with that, you can also change the interval of the banner update, in `__main__.py` where the `sleep` is run.
 
 To sum it up, Here is the workflow on setting up:
 - Install the dependencies.
@@ -51,7 +54,7 @@ To sum it up, Here is the workflow on setting up:
 
 ### 🚀 Run the app!
 
-Great! You're good to go now. NOW, Just run the app using,
+Great! You're good to go. Now, Just run the app using,
 
 ```sh
 pipenv run start
@@ -68,7 +71,7 @@ a PR to this repo and it will be deployed once it's accepted.
 commit or the PR Created. Read [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/) before
 making the commit message.
 
-You can find out contributing guidelines [here](CONTRIBUTING.md).
+Find out more about our contributing guidelines [here](CONTRIBUTING.md).
 
 ## Show your support
 
