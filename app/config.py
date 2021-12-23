@@ -36,6 +36,9 @@ class Config:
         False: ["Was listening to", "Previously binging to", "Was vibing to"]
     }
 
+    # Github repository URL
+    GITHUB_REPO_URL = "https://github.com/janaSunrise/Spotify-Twitter-Banner/"
+
 
 class LoggerConfig:
     # File to store logs.

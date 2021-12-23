@@ -16,7 +16,7 @@ PYTHON_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.versio
 
 class Spotify:
     RETRY_ATTEMPTS = 5
-    USER_AGENT = f"Spotify Twitter Banner - Python/{PYTHON_VERSION} Requests/{requests.__version__}"
+    USER_AGENT = f"Spotify Twitter Banner ({Config.GITHUB_REPO_URL}) - Python/{PYTHON_VERSION} Requests/{requests.__version__}"
 
     def __init__(self, client_id: str, client_secret: str) -> None:
         self.client_id = client_id
