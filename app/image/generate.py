@@ -92,7 +92,7 @@ def generate_image(
 
     # Add the status text above the image, aligned in the center, using midpoint from coordinates of 50 to 400.
     draw.text(
-        (midpoint(50, 350, status, fira_code), 50),
+        (50, 50),
         status,
         (255, 255, 255),
         font=poppins,
@@ -125,6 +125,17 @@ def generate_image(
     # Add explicit tag.
     if is_explicit:
         draw_tag(draw, 400, 300, "EXPLICIT", fira_code_small, (255, 255, 255))
+
+    # Add a white line in left of top tracks, to separate it.
+    draw.line(
+        (
+            img.size[0] - 375,
+            100,
+            img.size[0] - 375,
+            400,
+        ),
+        fill=white
+    )
 
     # Assign top songs name and artists font.
     top_tracks = [
