@@ -32,4 +32,4 @@ while True:
 
     # Sleep for 5 minutes.
     logger.info("Sleeping for 5 minutes.")
-    time.sleep(2 * 60)
+    time.sleep(5 * 60)
