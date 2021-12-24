@@ -1,6 +1,6 @@
 # Spotify Twitter Banner
 
-Dynamic Twitter banner, to show off your spotify status. Banner updated every 5 minutes.
+Dynamic Twitter banner to show off your spotify status. Banner updated every 5 minutes.
 
 ## Installation and Usage
 
