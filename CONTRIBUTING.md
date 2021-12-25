@@ -11,7 +11,7 @@ The contributions may be rejected on the basis of a contributor failing to follo
 1. **Lint before you push.** We have simple but strict style of rules that are enforced through linting. You must
    always lint your code before committing or pushing. Using tools such as `flake8` and `pre-commit` can make this
    easier. Make sure to follow our [style guide](./CONTRIBUTING.md#style-guide) when contributing.
-2. **Make great commits.** Great commits should be atomic, with a commit message explaining what and why. More on this 
+2. **Make great commits.** Great commits should be atomic, with a commit message explaining what and why. More on this
    can be found in [this section](./CONTRIBUTING.md#writing-good-commit-messages).
 3. **Do not open a pull request if you aren't assigned to the issue.** If someone is already working on some
    issue, consider offering to collaborate instead of working on your own.
