@@ -1,16 +1,18 @@
 # Contributing Guide
 
-This project is completely open-sourced, and we welcome all kind of contributions. This is to in order to
-enforce clean code, and to ensure the quality of the code we write is maintained.
+This project is completely open-sourced, and we welcome all kind of contributions. This is to in order to enforce
+clean code, and to ensure the quality of the code we write is maintained.
 
-We have strict guidelines for people who are willing or looking to contribute to this project. Please read them carefully. The contributions may be rejected on the basis of a contributor failing to follow these guidelines.
+We have strict guidelines for people who are willing or looking to contribute to this project. Please read them carefully.
+The contributions may be rejected on the basis of a contributor failing to follow these guidelines.
 
 ## The Golden Rules of Contributing
 
 1. **Lint before you push.** We have simple but strict style of rules that are enforced through linting. You must
    always lint your code before committing or pushing. Using tools such as `flake8` and `pre-commit` can make this
    easier. Make sure to follow our [style guide](./CONTRIBUTING.md#style-guide) when contributing.
-2. **Make great commits.** Great commits should be atomic, with a commit message explaining what and why. More on this can be found in [this section](./CONTRIBUTING.md#writing-good-commit-messages).
+2. **Make great commits.** Great commits should be atomic, with a commit message explaining what and why. More on this 
+   can be found in [this section](./CONTRIBUTING.md#writing-good-commit-messages).
 3. **Do not open a pull request if you aren't assigned to the issue.** If someone is already working on some
    issue, consider offering to collaborate instead of working on your own.
    Feel free to ask to be assigned to the issue, if nobody is working on it, or assigned. Before working on a
@@ -153,8 +155,6 @@ logical. Exceptions might include:
 
 Multi-line strings or Docstrings should be ensured that it's wrapped in triple double quotes (`"""my string"""`).
 
-Wildcard imports should be avoided.
-
 ### Work in Progress (WIP) PRs
 
 When any PR is actively being worked on, and is not ready for merging, it should be marked as a WIP. This provides
@@ -163,7 +163,8 @@ both a visual and functional indicator that the PR is in a draft state, and is n
 Github provides a feature of marking a PR as Draft to indicate that it is not ready for review or merge. This
 feature should be utilized in place of the traditional method of prepending `[WIP]` to the PR title.
 
-As stated earlier, **ensure that "Allow edits from maintainers" is checked**. This gives permission for maintainers to commit changes directly to your fork, speeding up the review process.
+As stated earlier, **ensure that "Allow edits from maintainers" is checked**. This gives permission for maintainers to
+commit changes directly to your fork, speeding up the review process.
 
 [Here](https://github.blog/2019-02-14-introducing-draft-pull-requests/) is all the info you need about Draft PRs
 in Github.
