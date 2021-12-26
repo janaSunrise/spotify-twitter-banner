@@ -91,7 +91,7 @@ Find out more about our contributing guidelines [here](CONTRIBUTING.md).
 
 ## Show your support
 
-We love people's support in growing and improving. Be sure to leave a 🌟 if you like the project and
+We love people's support in growing and improving. Be sure to drop a 🌟 if you like the project and
 also be sure to contribute, if you're interested!
 
 <div align="center">Made by Sunrit Jana with ❤</div>
