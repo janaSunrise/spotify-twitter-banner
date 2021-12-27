@@ -55,13 +55,13 @@ To sum it up, Here is the workflow on setting up:
 
 ### 🚀 Run the app!
 
-Great! You're good to go. Now, Just run the app using,
+Great! You're all set. Now, Just run the app using,
 
 ```sh
 pipenv run start
 ```
 
-And, you're all set!
+And, you're good to go!
 
 ## 🛠 Development
 
