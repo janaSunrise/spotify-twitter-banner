@@ -15,14 +15,14 @@ pipenv sync -d
 ### Setting up Spotify API for the project
 
 - Go to the developer panel at spotify. [Panel URL](https://developer.spotify.com).
-- Make an App, Specify the name, and description.
+- Create an app, Specify the name, and description.
 - Add `http://localhost:8888/callback` to the Callback URLs.
 - Take a note of the Client ID, and Client Secret for setting up `.env`
 
 ### Setting up Twitter API
 
 - Go to the developer panel [here](https://developer.twitter.com/).
-- Create an App and set it up.
+- Create an app and set it up.
 - Go to the app, navigate to Keys and Tokens and generate the keys.
 - Get the Consumer Key, Consumer Secret, and Access Token, and Access Token Secret. Note them for `.env` setup.
 
@@ -33,9 +33,9 @@ variables by renaming the `.env.example` file to `.env` with the respective valu
 
 ### Authentication with Spotify
 
-Callback based authentication has been built into the App. If you're running for the first time, or the refresh
+Callback based authentication has been built into the app. If you're running for the first time, or the refresh
 token stored in the configuration file (`~/.spotify_refresh_token`) could not be discovered, you will be prompted
-to authenticate with Spotify. You'll be asked to open a URL, which redirects to the callback URL setup. Copy the
+to authenticate with Spotify. You will be asked to open a URL, which redirects to the callback URL setup. Copy the
 code from the URL and paste it in the terminal.
 
 ### Configuration.
