@@ -128,7 +128,7 @@ class Spotify:
         }
 
         # Perform request with retries.
-        for _attempt in range(self.RETRY_ATTEMPTS):
+        for _ in range(self.RETRY_ATTEMPTS):
             # Fetch.
             response = requests.request(route.method, route.url, headers=headers, json=data)
 
