@@ -62,7 +62,7 @@ def get_song_data(song: dict) -> tuple:
 
 
 def generate_image(
-        status: str, is_playing: bool, song: dict, top_tracks: list, image_save_path: str, show_only: bool = False
+    status: str, is_playing: bool, song: dict, top_tracks: list, image_save_path: str, show_only: bool = False
 ) -> None:
     # Process the songs and top tracks.
     song_name, artist_name, song_image, is_explicit, album_name = get_song_data(song)
