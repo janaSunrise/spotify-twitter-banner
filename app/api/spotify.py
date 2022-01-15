@@ -30,7 +30,7 @@ class Spotify:
         if not self.refresh_token:
             raise Exception("No refresh token provided.")
 
-        token = base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
+        token = self.generate_base64_token()
 
         headers = {"Authorization": f"Basic {token}"}
         data = {
@@ -55,7 +55,7 @@ class Spotify:
 
     # Function to get the refresh token from code.
     def get_refresh_token(self, code: str) -> dict:
-        token = base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
+        token = self.generate_base64_token()
 
         # Headers and data.
         headers = {
@@ -171,6 +171,9 @@ class Spotify:
                 continue
 
     # Utility methods.
+    def generate_base64_token(self) -> str:
+        return base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
+
     @staticmethod
     def _form_url(url: str, data: dict) -> str:
         url += "?" + "&".join([f"{dict_key}={dict_value}" for dict_key, dict_value in data.items()])
