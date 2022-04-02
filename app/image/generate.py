@@ -17,12 +17,13 @@ def truncate_text(text: str, font: ImageFont.FreeTypeFont, max_width: int) -> st
 
 
 def load_image_from_url(url: str) -> Image.Image:
+    """Load an image from a URL."""
     response = requests.get(url)
     return Image.open(BytesIO(response.content))
 
 
-# Function to calculate the mid point based on the start and end points, and the text to be written.
-def midpoint(start: int, end: int, text: str, font: ImageFont.FreeTypeFont) -> int:
+def midpoint(start: int, end: int, text: str, font: ImageFont.FreeTypeFont) -> float:
+    """Calculate the midpoint between two points with the text width of the font."""
     mid = (start + end) / 2
 
     text_width = font.getsize(text)[0]
@@ -30,8 +31,8 @@ def midpoint(start: int, end: int, text: str, font: ImageFont.FreeTypeFont) -> i
     return mid - (text_width / 2)
 
 
-# Function to display tag - Background as white, and Text as black in a small rounded rectangle.
-def draw_tag(draw: ImageDraw.Draw, x: int, y: int, text: str, font: ImageFont.FreeTypeFont, color: tuple) -> None:
+def draw_tag(draw: ImageDraw.ImageDraw, x: int, y: int, text: str, font: ImageFont.FreeTypeFont, color: tuple) -> None:
+    """Draw a tag with black text and specified color as background."""
     draw.rectangle((x, y, x + font.getsize(text)[0] + 10, y + font.getsize(text)[1] + 10), fill=color)
     draw.text((x + 5, y + 5), text, font=font, fill=(0, 0, 0))
 
@@ -189,11 +190,11 @@ def generate_image(
         # Draw the progress bar. White for the covered progress, Gray for the left progress.
         # Draw from right of the image till the top tracks.
         draw.rectangle(
-            [(375, 425), (1100, 430)],
+            ((375, 425), (1100, 430)),
             fill="#B3B3B3"
         )
         draw.rectangle(
-            [(375 + progress_bar_width, 425), (1100, 430)], fill="#404040"
+            ((375 + progress_bar_width, 425), (1100, 430)), fill="#404040"
         )
 
         # Add the time progress text, in the center of the progress bar. Display current time and total time.
@@ -228,5 +229,3 @@ def generate_image(
     else:
         # Save the image to the path specified.
         img.save(image_save_path, format="JPEG", quality=100)
-
-    return
