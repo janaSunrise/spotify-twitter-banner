@@ -7,6 +7,9 @@ class Config:
     # Debug mode.
     DEBUG = config("DEBUG", default=False, cast=bool)
 
+    # Update interval (in minutes).
+    UPDATE_INTERVAL = config("UPDATE_INTERVAL", default=5, cast=int)
+
     # Spotify credentials
     SPOTIFY_CLIENT_ID = config("SPOTIFY_CLIENT_ID")
     SPOTIFY_CLIENT_SECRET = config("SPOTIFY_CLIENT_SECRET")

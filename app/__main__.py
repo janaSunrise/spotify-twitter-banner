@@ -9,7 +9,6 @@ from .image.generate import generate_image
 from .twitter import update_twitter_banner
 from .utils import get_song_info
 
-# Update banner every 5 minutes, until stopped.
 while True:
     # Get top tracks.
     top_tracks = spotify.top_tracks(limit=5)
@@ -30,6 +29,6 @@ while True:
     update_twitter_banner(twitter)
     logger.info("Updated twitter banner.")
 
-    # Sleep for 5 minutes.
-    logger.info("Sleeping for 5 minutes.")
-    time.sleep(5 * 60)
+    # Sleep for specified interval.
+    logger.info(f"Sleeping for {Config.UPDATE_INTERVAL} minutes.")
+    time.sleep(Config.UPDATE_INTERVAL * 60)
