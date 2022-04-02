@@ -72,11 +72,15 @@ class Spotify:
 
     # Function to handle loading refresh token.
     def load_refresh_token(self) -> str:
-        # Load JSON and get refresh token.
+        # Load refresh token from environment variable.
+        if Config.SPOTIFY_REFRESH_TOKEN:
+            return Config.SPOTIFY_REFRESH_TOKEN
+
+        # If not in environmental vars, load from JSON.
         with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "r") as file:
             token = json.load(file)
 
-        # Check if refresh token exists.
+        # Check if refresh token exists, If not do the workflow.
         if "refresh_token" not in token:
             logger.info("No refresh token found. Please follow the steps to get the refresh token.")
 
@@ -87,7 +91,6 @@ class Spotify:
             # Wait for user to input code.
             code = input("Enter the value of code from URL query parameter: ")
 
-            # Handle input.
             if not code:
                 raise Exception("No code provided.")
 

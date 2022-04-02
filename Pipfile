@@ -20,5 +20,6 @@ pre-commit = "~=2.17.0"
 
 [scripts]
 start = "python -m app"
+generate-refresh-token = "python -m scripts.generate_refresh_token"
 precommit = "pre-commit install"
 lint = "pre-commit run --all-files"
