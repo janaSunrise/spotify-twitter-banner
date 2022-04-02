@@ -186,8 +186,9 @@ class Spotify:
 
         return url
 
-    # Currently playing.
+    # Main endpoints.
     def currently_playing(self) -> t.Optional[t.Dict[str, t.Any]]:
+        """Get the currently playing song."""
         route = Route("GET", "/me/player/currently-playing")
 
         return self.fetch(route)
@@ -203,7 +204,7 @@ class Spotify:
 
     def recently_played(
         self, limit: int = 20, before: t.Optional[str] = None, after: t.Optional[str] = None
-    ) -> t.Optional[dict]:
+    ) -> t.Dict[str, t.Any]:
         """Get recently played tracks."""
         data: t.Dict[str, t.Any] = {"limit": limit}
 
@@ -218,7 +219,7 @@ class Spotify:
             self._form_url("/me/player/recently-played", data)
         )
 
-        return self.fetch(route)
+        return t.cast(dict, self.fetch(route))
 
     def top_tracks(
         self,
