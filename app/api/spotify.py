@@ -133,10 +133,10 @@ class Spotify:
             response = requests.request(route.method, route.url, headers=headers, json=data)
 
             # Log code.
-            logger.debug(f"Fetch: [{route.method}] {route.url} | Code: {response.status_code}")
+            logger.debug(f"[{route.method}] ({response.status_code}) {route.url}")
 
             # Check if the request was successful.
-            if response.status_code == 200:
+            if 200 <= response.status_code < 300:
                 return response.json()
 
             # Check if the request was a 429.

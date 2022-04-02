@@ -1,7 +1,6 @@
 import random
 import typing as t
 
-# Check if type-checking is enabled.
 if t.TYPE_CHECKING:
     from .api.spotify import Spotify
 

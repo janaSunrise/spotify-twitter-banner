@@ -4,6 +4,9 @@ from decouple import config
 
 
 class Config:
+    # Debug mode.
+    DEBUG = config("DEBUG", default=False, cast=bool)
+
     # Spotify credentials
     SPOTIFY_CLIENT_ID = config("SPOTIFY_CLIENT_ID")
     SPOTIFY_CLIENT_SECRET = config("SPOTIFY_CLIENT_SECRET")
@@ -14,7 +17,7 @@ class Config:
     TWITTER_ACCESS_TOKEN = config("TWITTER_ACCESS_TOKEN")
     TWITTER_ACCESS_TOKEN_SECRET = config("TWITTER_ACCESS_TOKEN_SECRET")
 
-    # Redirect URI -- Used for OAuth.
+    # Redirect URI, Used for OAuth.
     SPOTIFY_REDIRECT_URI = "http://localhost:8888/callback"
 
     # Spotify scopes
@@ -45,7 +48,7 @@ class LoggerConfig:
     LOG_FILE = "logs/app.log"
 
     # Base level of logging.
-    LOG_LEVEL = "INFO"
+    LOG_LEVEL = "TRACE" if Config.DEBUG else "INFO"
 
     # Format of the log.
     LOG_FORMAT = (
