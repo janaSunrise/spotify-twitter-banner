@@ -57,7 +57,6 @@ class Spotify:
     def get_refresh_token(self, code: str) -> dict:
         token = self.generate_base64_token()
 
-        # Headers and data.
         headers = {
             "Authorization": f"Basic {token}"
         }
@@ -67,7 +66,6 @@ class Spotify:
             "redirect_uri": Config.SPOTIFY_REDIRECT_URI,
         }
 
-        # Post.
         response = requests.post("https://accounts.spotify.com/api/token", headers=headers, data=data)
 
         return response.json()
@@ -108,10 +106,15 @@ class Spotify:
         # Return refresh token.
         return token["refresh_token"]
 
-    # Method to fetch the API.
-    def fetch(self, route: Route, **kwargs) -> t.Optional[dict]:
-        headers = kwargs.pop("headers", {})
-        data = kwargs.pop("data", None)
+    def fetch(
+        self,
+        route: Route,
+        *,
+        headers: t.Optional[dict] = None,
+        data: t.Optional[t.Any] = None
+    ) -> t.Optional[dict]:
+        if not headers:
+            headers = {}
 
         # Check if Authorization exists.
         if "Authorization" not in headers:
@@ -129,14 +132,12 @@ class Spotify:
 
         # Perform request with retries.
         for _ in range(self.RETRY_ATTEMPTS):
-            # Fetch.
             response = requests.request(route.method, route.url, headers=headers, json=data)
 
-            # Log code.
             logger.debug(f"[{route.method}] ({response.status_code}) {route.url}")
 
             # Check if the request was successful.
-            if 200 <= response.status_code < 300:
+            if response.status_code == 200:
                 return response.json()
 
             # Check if the request was a 429.
@@ -148,27 +149,28 @@ class Spotify:
                 logger.info(f"Ratelimited. Waiting for {retry_after} seconds.")
                 time.sleep(retry_after)
 
-                # Retry.
                 continue
 
             # Check if the request was a 401.
             if response.status_code == 401:
-                # Get the bearer info.
                 logger.info("Bearer info expired. Refreshing.")
                 self.bearer_info = self.get_bearer_info()
 
-                # Retry.
                 continue
-
-            # Check if the request was a 404.
-            if response.status_code == 404:
-                # Return None.
-                logger.warning(f"Failed to fetch: {route.url}. Route not found.")
-                return None
 
             # Ignore anything 5xx
             if response.status_code >= 500:
                 continue
+
+            # Check if the request was a 404.
+            if response.status_code == 404:
+                logger.warning(f"Failed to fetch: {route.url}. Route not found.")
+                return None
+
+            # Check if the request was a 403.
+            if response.status_code == 403:
+                logger.warning(f"Failed to fetch: {route.url}. Forbidden route.")
+                return None
 
     # Utility methods.
     def generate_base64_token(self) -> str:
@@ -188,12 +190,14 @@ class Spotify:
 
     # Is playing?
     def is_playing(self) -> bool:
+        """Check if the user is currently listening to music."""
         return self.currently_playing() is not None and self.currently_playing()["is_playing"]
 
     # Recently played.
     def recently_played(
         self, limit: int = 20, before: t.Optional[str] = None, after: t.Optional[str] = None
     ) -> t.Optional[dict]:
+        """Get recently played tracks."""
         data = {"limit": limit}
 
         if before:
@@ -202,7 +206,6 @@ class Spotify:
         if after:
             data["after"] = after
 
-        # Form the route
         route = Route(
             "GET",
             self._form_url("/me/player/recently-played", data)
