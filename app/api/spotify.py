@@ -26,7 +26,7 @@ class Spotify:
         self.refresh_token = self.load_refresh_token()
 
     # Get bearer info.
-    def get_bearer_info(self) -> dict:
+    def get_bearer_info(self) -> t.Dict[str, t.Any]:
         if not self.refresh_token:
             raise Exception("No refresh token provided.")
 
@@ -54,7 +54,7 @@ class Spotify:
         return info
 
     # Function to get the refresh token from code.
-    def get_refresh_token(self, code: str) -> dict:
+    def get_refresh_token(self, code: str) -> t.Dict[str, t.Any]:
         token = self.generate_base64_token()
 
         headers = {
@@ -110,9 +110,9 @@ class Spotify:
         self,
         route: Route,
         *,
-        headers: t.Optional[dict] = None,
+        headers: t.Optional[t.Dict[str, t.Any]] = None,
         data: t.Optional[t.Any] = None
-    ) -> t.Optional[dict]:
+    ) -> t.Optional[t.Dict[str, t.Any]]:
         if not headers:
             headers = {}
 
@@ -127,6 +127,7 @@ class Spotify:
 
         headers = {
             "User-Agent": self.USER_AGENT,
+            "Content-Type": "application/json",
             **headers
         }
 
@@ -177,28 +178,31 @@ class Spotify:
         return base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
 
     @staticmethod
-    def _form_url(url: str, data: dict) -> str:
+    def _form_url(url: str, data: t.Dict[str, t.Any]) -> str:
         url += "?" + "&".join([f"{dict_key}={dict_value}" for dict_key, dict_value in data.items()])
 
         return url
 
     # Currently playing.
-    def currently_playing(self) -> t.Optional[dict]:
+    def currently_playing(self) -> t.Optional[t.Dict[str, t.Any]]:
         route = Route("GET", "/me/player/currently-playing")
 
         return self.fetch(route)
 
-    # Is playing?
     def is_playing(self) -> bool:
         """Check if the user is currently listening to music."""
-        return self.currently_playing() is not None and self.currently_playing()["is_playing"]
+        currently_playing = self.currently_playing()
 
-    # Recently played.
+        if currently_playing:
+            return currently_playing["is_playing"]
+
+        return False
+
     def recently_played(
         self, limit: int = 20, before: t.Optional[str] = None, after: t.Optional[str] = None
     ) -> t.Optional[dict]:
         """Get recently played tracks."""
-        data = {"limit": limit}
+        data: t.Dict[str, t.Any] = {"limit": limit}
 
         if before:
             data["before"] = before
@@ -213,15 +217,14 @@ class Spotify:
 
         return self.fetch(route)
 
-    # Top songs.
     def top_tracks(
         self,
         limit: int = 20,
         offset: int = 0,
         time_range: t.Optional[t.Literal["short_term", "medium_term", "long_term"]] = None
-    ) -> t.Optional[dict]:
-        # Add URL parameters.
-        data = {
+    ) -> t.Optional[t.Dict[str, t.Any]]:
+        """Get top tracks of the user."""
+        data: t.Dict[str, t.Any] = {
             "limit": limit,
             "offset": offset
         }
@@ -229,7 +232,6 @@ class Spotify:
         if time_range:
             data["time_range"] = time_range
 
-        # Route.
         route = Route(
             "GET",
             self._form_url("/me/top/tracks", data)
