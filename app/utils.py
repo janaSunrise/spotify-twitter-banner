@@ -1,8 +1,6 @@
 import random
 import typing as t
 
-from .models import Song
-
 if t.TYPE_CHECKING:
     from .api.spotify import Spotify
 
@@ -19,7 +17,7 @@ def get_song_info(spotify: "Spotify") -> t.Tuple[dict, bool]:
     now_playing = spotify.currently_playing()
 
     # Check if song is playing.
-    if now_playing is not None and now_playing != {}:
+    if now_playing and now_playing != {}:
         song = now_playing["item"]
 
         # Update all properties from now_playing.
