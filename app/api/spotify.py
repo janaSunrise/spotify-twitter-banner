@@ -203,7 +203,10 @@ class Spotify:
         return False
 
     def recently_played(
-        self, limit: int = 20, before: t.Optional[str] = None, after: t.Optional[str] = None
+        self,
+        limit: int = 20,
+        before: t.Optional[str] = None,
+        after: t.Optional[str] = None
     ) -> t.Dict[str, t.Any]:
         """Get recently played tracks."""
         data: t.Dict[str, t.Any] = {"limit": limit}

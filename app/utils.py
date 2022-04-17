@@ -1,17 +1,19 @@
 import random
 import typing as t
 
+from .models import Song
+
 if t.TYPE_CHECKING:
     from .api.spotify import Spotify
 
 
-# Function to generate OAuth URL.
+# Generate the OAuth2 URL for spotify
 def generate_oauth_url(client_id: str, redirect_uri: str, scopes: list) -> str:
     return f"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri=" \
            f"{redirect_uri}&scope={','.join(scopes)}"
 
 
-# Function to get song playing info.
+# Parse JSON data for song into Song object.
 def get_song_info(spotify: "Spotify") -> t.Tuple[dict, bool]:
     # Get the currently playing track.
     now_playing = spotify.currently_playing()
