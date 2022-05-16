@@ -1,9 +1,9 @@
-from io import BytesIO
+import typing as t
 
-import requests
 from PIL import Image, ImageDraw, ImageFont
 
 from ..config import Fonts
+from ..models.song import Song
 
 
 def truncate_text(text: str, font: ImageFont.FreeTypeFont, max_width: int) -> str:
@@ -14,12 +14,6 @@ def truncate_text(text: str, font: ImageFont.FreeTypeFont, max_width: int) -> st
         text = text[:-1]
 
     return text.strip() + ".."
-
-
-def load_image_from_url(url: str) -> Image.Image:
-    """Load an image from a URL."""
-    response = requests.get(url)
-    return Image.open(BytesIO(response.content))
 
 
 def midpoint(start: int, end: int, text: str, font: ImageFont.FreeTypeFont) -> float:
@@ -37,37 +31,13 @@ def draw_tag(draw: ImageDraw.ImageDraw, x: int, y: int, text: str, font: ImageFo
     draw.text((x + 5, y + 5), text, font=font, fill=(0, 0, 0))
 
 
-def get_song_data(song: dict) -> tuple:
-    # Get the song type.
-    currently_playing_type = song.get("currently_playing_type", "track")
-
-    # Load name, artist, image, is_explicit.
-    song_name, artist_name, img, is_explicit, album_name = None, None, None, None, None
-
-    if currently_playing_type == "track":
-        artist_name = song["artists"][0]["name"].replace("&", "&amp;")
-        song_name = song["name"].replace("&", "&amp;")
-        album_name = song["album"]["name"].replace("&", "&amp;")
-
-        img = load_image_from_url(song["album"]["images"][1]["url"])
-    elif currently_playing_type == "episode":
-        artist_name = song["show"]["publisher"].replace("&", "&amp;")
-        song_name = song["name"].replace("&", "&amp;")
-        album_name = song["show"]["name"].replace("&", "&amp;")
-
-        img = load_image_from_url(song["images"][1]["url"])
-
-    is_explicit = song["explicit"]
-
-    return song_name, f"By {artist_name}", img, is_explicit, f"On {album_name}"
-
-
 def generate_image(
-    status: str, is_playing: bool, song: dict, top_tracks: list, image_save_path: str, show_only: bool = False
+    status: str,
+    song: Song,
+    top_tracks: list,
+    image_save_path: str,
+    show_only: bool = False
 ) -> None:
-    # Process the songs and top tracks.
-    song_name, artist_name, song_image, is_explicit, album_name = get_song_data(song)
-
     # Get the top tracks filtered by grabbing the name, and artist.
     top_tracks = [
         {
@@ -88,8 +58,8 @@ def generate_image(
     poppins_semibold = ImageFont.truetype(Fonts.POPPINS_SEMIBOLD, size=27)
 
     # Add the song image to the image.
-    song_image.thumbnail((350, 350), Image.ANTIALIAS)
-    img.paste(song_image, (50, 100))
+    song.image.thumbnail((350, 350), Image.ANTIALIAS)
+    img.paste(song.image, (50, 100))
 
     # Add the status text above the image, aligned in the center, using midpoint from coordinates of 50 to 400.
     draw.text(
@@ -104,27 +74,27 @@ def generate_image(
 
     draw.text(
         (400, 150),
-        truncate_text(song_name, poppins, 600),
+        truncate_text(song.name, poppins, 600),
         fill=white,
         font=poppins_semibold,
     )
 
     draw.text(
         (400, 200),
-        truncate_text(artist_name, poppins, 600),
+        truncate_text(song.artist, poppins, 600),
         fill=white,
         font=poppins,
     )
 
     draw.text(
         (400, 250),
-        truncate_text(album_name, poppins, 600),
+        truncate_text(song.album, poppins, 600),
         fill=white,
         font=poppins,
     )
 
     # Add explicit tag.
-    if is_explicit:
+    if song.is_explicit:
         draw_tag(draw, 400, 300, "EXPLICIT", fira_code_small, (255, 255, 255))
 
     # Add a white line in left of top tracks, to separate it.
@@ -180,9 +150,9 @@ def generate_image(
         )
 
     # Add song progress bar, if listening currently.
-    if is_playing:
-        total_time = song["duration_ms"]
-        current_time = song["progress_ms"]
+    if song.is_now_playing:
+        total_time = t.cast(int, song.duration_ms)
+        current_time = t.cast(int, song.progress_ms)
 
         # Calculate the progress bar width.
         progress_bar_width = (current_time / total_time) * 700

@@ -1,6 +1,8 @@
 import random
 import typing as t
 
+from .models.song import Song
+
 if t.TYPE_CHECKING:
     from .api.spotify import Spotify
 
@@ -12,22 +14,22 @@ def generate_oauth_url(client_id: str, redirect_uri: str, scopes: list) -> str:
 
 
 # Parse JSON data for song into Song object.
-def get_song_info(spotify: "Spotify") -> t.Tuple[dict, bool]:
+def get_song_info(spotify: "Spotify") -> Song:
     # Get the currently playing track.
     now_playing = spotify.currently_playing()
 
-    # Check if song is playing.
-    if now_playing and now_playing != {}:
+    # Check if song is playing, and it's always a track.
+    if now_playing and now_playing["currently_playing_type"] == "track":
         song = now_playing["item"]
 
-        # Update all properties from now_playing.
-        song.update(now_playing)
+        # Ensure that there is a currently playing type
+        song["currently_playing_type"] = now_playing["currently_playing_type"]
 
-        # Ensure that there is a currently playing type.
-        if not now_playing.get("currently_playing_type"):
-            song["currently_playing_type"] = now_playing["currently_playing_type"]
+        # Ensure now playing exists
+        song["is_now_playing"] = now_playing["is_playing"]
 
-        is_now_playing = now_playing["is_playing"]
+        # `progress_ms` is not in `song`, and instead in `now_playing`
+        song["progress_ms"] = now_playing["progress_ms"]
     else:
         # Get recently played songs.
         recently_played = spotify.recently_played()
@@ -38,12 +40,8 @@ def get_song_info(spotify: "Spotify") -> t.Tuple[dict, bool]:
 
         song = recently_played["items"][idx]["track"]
 
-        # Update properties from recently_played.
-        song.update(recently_played)
-
-        # Add track type.
+        # Add track type, if not actively playing.
         song["currently_playing_type"] = "track"
+        song["is_now_playing"] = False
 
-        is_now_playing = False
-
-    return song, is_now_playing
+    return Song.from_json(song)
