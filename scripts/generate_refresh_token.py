@@ -1,5 +1,5 @@
 import base64
-import typing as t
+from typing import Any, Dict
 
 import requests
 
@@ -7,7 +7,7 @@ from app.config import Config
 from app.utils import generate_oauth_url
 
 
-def get_refresh_token(code: str) -> t.Dict[str, t.Any]:
+def get_refresh_token(code: str) -> Dict[str, Any]:
     token = base64.b64encode(f"{Config.SPOTIFY_CLIENT_ID}:{Config.SPOTIFY_CLIENT_SECRET}".encode()).decode("utf-8")
 
     headers = {

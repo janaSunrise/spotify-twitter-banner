@@ -1,27 +1,28 @@
 import os
+from typing import Optional, cast
 
 from decouple import config
 
 
 class Config:
     # Debug mode.
-    DEBUG = config("DEBUG", default=False, cast=bool)
+    DEBUG = cast(bool, config("DEBUG", default=False, cast=bool))
 
     # Update interval (in minutes).
-    UPDATE_INTERVAL = config("UPDATE_INTERVAL", default=5, cast=int)
+    UPDATE_INTERVAL = cast(int, config("UPDATE_INTERVAL", default=5, cast=int))
 
     # Spotify refresh token for headless environments.
-    SPOTIFY_REFRESH_TOKEN = config("SPOTIFY_REFRESH_TOKEN", default=None)
+    SPOTIFY_REFRESH_TOKEN = cast(Optional[str], config("SPOTIFY_REFRESH_TOKEN", default=None))
 
     # Spotify credentials
-    SPOTIFY_CLIENT_ID = config("SPOTIFY_CLIENT_ID")
-    SPOTIFY_CLIENT_SECRET = config("SPOTIFY_CLIENT_SECRET")
+    SPOTIFY_CLIENT_ID = cast(str, config("SPOTIFY_CLIENT_ID"))
+    SPOTIFY_CLIENT_SECRET = cast(str, config("SPOTIFY_CLIENT_SECRET"))
 
     # Twitter credentials
-    TWITTER_CONSUMER_KEY = config("TWITTER_CONSUMER_KEY")
-    TWITTER_CONSUMER_SECRET = config("TWITTER_CONSUMER_SECRET")
-    TWITTER_ACCESS_TOKEN = config("TWITTER_ACCESS_TOKEN")
-    TWITTER_ACCESS_TOKEN_SECRET = config("TWITTER_ACCESS_TOKEN_SECRET")
+    TWITTER_CONSUMER_KEY = cast(str, config("TWITTER_CONSUMER_KEY"))
+    TWITTER_CONSUMER_SECRET = cast(str, config("TWITTER_CONSUMER_SECRET"))
+    TWITTER_ACCESS_TOKEN = cast(str, config("TWITTER_ACCESS_TOKEN"))
+    TWITTER_ACCESS_TOKEN_SECRET = cast(str, config("TWITTER_ACCESS_TOKEN_SECRET"))
 
     # Redirect URI, Used for OAuth.
     SPOTIFY_REDIRECT_URI = "http://localhost:8888/callback"

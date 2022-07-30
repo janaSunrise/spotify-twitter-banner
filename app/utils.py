@@ -1,9 +1,9 @@
 import random
-import typing as t
+from typing import TYPE_CHECKING
 
 from .models.song import Song
 
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
     from .api.spotify import Spotify
 
 

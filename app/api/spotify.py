@@ -2,7 +2,7 @@ import base64
 import json
 import sys
 import time
-import typing as t
+from typing import Any, Dict, Literal, Optional, cast
 
 import requests
 from loguru import logger
@@ -26,7 +26,7 @@ class Spotify:
         self.refresh_token = self.load_refresh_token()
 
     # Get bearer info.
-    def get_bearer_info(self) -> t.Dict[str, t.Any]:
+    def get_bearer_info(self) -> Dict[str, Any]:
         if not self.refresh_token:
             raise Exception("No refresh token provided.")
 
@@ -54,7 +54,7 @@ class Spotify:
         return info
 
     # Function to get the refresh token from code.
-    def get_refresh_token(self, code: str) -> t.Dict[str, t.Any]:
+    def get_refresh_token(self, code: str) -> Dict[str, Any]:
         token = self.generate_base64_token()
 
         headers = {
@@ -73,7 +73,7 @@ class Spotify:
     # Function to handle loading refresh token.
     def load_refresh_token(self) -> str:
         # Load refresh token from environment variable.
-        if Config.SPOTIFY_REFRESH_TOKEN:
+        if Config.SPOTIFY_REFRESH_TOKEN is not None:
             return Config.SPOTIFY_REFRESH_TOKEN
 
         # If not in environmental vars, load from JSON.
@@ -113,9 +113,9 @@ class Spotify:
         self,
         route: Route,
         *,
-        headers: t.Optional[t.Dict[str, t.Any]] = None,
-        data: t.Optional[t.Any] = None
-    ) -> t.Optional[t.Dict[str, t.Any]]:
+        headers: Optional[Dict[str, Any]] = None,
+        data: Optional[Any] = None
+    ) -> Optional[Dict[str, Any]]:
         if not headers:
             headers = {}
 
@@ -181,13 +181,13 @@ class Spotify:
         return base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
 
     @staticmethod
-    def _form_url(url: str, data: t.Dict[str, t.Any]) -> str:
+    def _form_url(url: str, data: Dict[str, Any]) -> str:
         url += "?" + "&".join([f"{dict_key}={dict_value}" for dict_key, dict_value in data.items()])
 
         return url
 
     # Main endpoints.
-    def currently_playing(self) -> t.Optional[t.Dict[str, t.Any]]:
+    def currently_playing(self) -> Optional[Dict[str, Any]]:
         """Get the currently playing song."""
         route = Route(
             "GET",
@@ -210,11 +210,11 @@ class Spotify:
     def recently_played(
         self,
         limit: int = 20,
-        before: t.Optional[str] = None,
-        after: t.Optional[str] = None
-    ) -> t.Dict[str, t.Any]:
+        before: Optional[str] = None,
+        after: Optional[str] = None
+    ) -> Dict[str, Any]:
         """Get recently played tracks."""
-        data: t.Dict[str, t.Any] = {"limit": limit}
+        data: Dict[str, Any] = {"limit": limit}
 
         if before:
             data["before"] = before
@@ -227,16 +227,16 @@ class Spotify:
             self._form_url("/me/player/recently-played", data)
         )
 
-        return t.cast(dict, self.fetch(route))
+        return cast(Dict[str, Any], self.fetch(route))
 
     def top_tracks(
         self,
         limit: int = 20,
         offset: int = 0,
-        time_range: t.Optional[t.Literal["short_term", "medium_term", "long_term"]] = None
-    ) -> t.Optional[t.Dict[str, t.Any]]:
+        time_range: Optional[Literal["short_term", "medium_term", "long_term"]] = None
+    ) -> Dict[str, Any]:
         """Get top tracks of the user."""
-        data: t.Dict[str, t.Any] = {
+        data: Dict[str, Any] = {
             "limit": limit,
             "offset": offset
         }
@@ -249,4 +249,4 @@ class Spotify:
             self._form_url("/me/top/tracks", data)
         )
 
-        return self.fetch(route)
+        return cast(Dict[str, Any], self.fetch(route))

@@ -1,4 +1,4 @@
-import typing as t
+from typing import cast
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -151,8 +151,8 @@ def generate_image(
 
     # Add song progress bar, if listening currently.
     if song.is_now_playing:
-        total_time = t.cast(int, song.duration_ms)
-        current_time = t.cast(int, song.progress_ms)
+        total_time = cast(int, song.duration_ms)
+        current_time = cast(int, song.progress_ms)
 
         # Calculate the progress bar width.
         progress_bar_width = (current_time / total_time) * 700

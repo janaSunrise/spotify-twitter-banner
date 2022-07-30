@@ -1,6 +1,6 @@
-import typing as t
 from dataclasses import dataclass, field
 from io import BytesIO
+from typing import Any, Dict, Literal, Optional
 
 import requests
 from PIL import Image
@@ -14,20 +14,20 @@ class Song:
 
     is_explicit: bool
 
-    currently_playing_type: t.Literal["track", "episode"]
+    currently_playing_type: Literal["track", "episode"]
     is_now_playing: bool
 
     image_url: str
     image: Image.Image = field(init=False, repr=False)
 
-    progress_ms: t.Optional[int]
-    duration_ms: t.Optional[int]
+    progress_ms: Optional[int]
+    duration_ms: Optional[int]
 
     def __post_init__(self):
         self.image = Image.open(BytesIO(requests.get(self.image_url).content))
 
     @classmethod
-    def from_json(cls, song: t.Dict[str, t.Any]) -> "Song":
+    def from_json(cls, song: Dict[str, Any]) -> "Song":
         is_now_playing = song["is_now_playing"]
         currently_playing_type = song["currently_playing_type"]
 

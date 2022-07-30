@@ -108,10 +108,10 @@ These tools utilize special formatting directives to enable richer formatting in
 For example:
 
 ```py
-import typing as t
+from typing import Dict, Optional
 
 
-def foo(bar: int, baz: t.Optional[t.Dict[str, str]] = None) -> bool:
+def foo(bar: int, baz: Optional[Dict[str, str]] = None) -> bool:
     """
     Does some things with some stuff.
 
@@ -132,10 +132,10 @@ wrapped with backticks (`` ` ``), such as \`variable\`.
 For example, the above docstring would become:
 
 ```py
-import typing as t
+from typing import Dict, Optional
 
 
-def foo(bar: int, baz: t.Optional[t.Dict[str, str]] = None) -> bool:
+def foo(bar: int, baz: Optional[Dict[str, str]] = None) -> bool:
     """
     Does some things with some stuff.
 
