@@ -18,8 +18,8 @@ def get_song_info(spotify: "Spotify") -> Song:
     # Get the currently playing track.
     now_playing = spotify.currently_playing()
 
-    # Check if song is playing, and it's always a track.
-    if now_playing and now_playing["currently_playing_type"] == "track":
+    # Check if song is playing.
+    if now_playing and now_playing != {}:
         song = now_playing["item"]
 
         # Ensure that there is a currently playing type

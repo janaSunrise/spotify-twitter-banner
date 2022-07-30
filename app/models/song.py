@@ -29,16 +29,23 @@ class Song:
     @classmethod
     def from_json(cls, song: t.Dict[str, t.Any]) -> "Song":
         is_now_playing = song["is_now_playing"]
-        currently_playing_type = song.get("currently_playing_type")
+        currently_playing_type = song["currently_playing_type"]
 
         progress_ms = song.get("progress_ms")
         duration_ms = song.get("duration_ms")
 
-        artist_name = song["artists"][0]["name"].replace("&", "&amp;")
-        song_name = song["name"].replace("&", "&amp;")
-        album_name = song["album"]["name"].replace("&", "&amp;")
+        if currently_playing_type == "track":
+            artist_name = song["artists"][0]["name"].replace("&", "&amp;")
+            song_name = song["name"].replace("&", "&amp;")
+            album_name = song["album"]["name"].replace("&", "&amp;")
 
-        img_url = song["album"]["images"][1]["url"]
+            img_url = song["album"]["images"][1]["url"]
+        else:
+            artist_name = song["show"]["publisher"].replace("&", "&amp;")
+            song_name = song["name"].replace("&", "&amp;")
+            album_name = song["show"]["name"].replace("&", "&amp;")
+
+            img_url = song["images"][1]["url"]
 
         return cls(
             song_name,

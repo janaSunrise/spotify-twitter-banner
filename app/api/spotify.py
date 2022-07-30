@@ -189,7 +189,12 @@ class Spotify:
     # Main endpoints.
     def currently_playing(self) -> t.Optional[t.Dict[str, t.Any]]:
         """Get the currently playing song."""
-        route = Route("GET", "/me/player/currently-playing")
+        route = Route(
+            "GET",
+            self._form_url("/me/player/currently-playing", {
+                "additional_types": "track,episode"
+            })
+        )
 
         return self.fetch(route)
 
