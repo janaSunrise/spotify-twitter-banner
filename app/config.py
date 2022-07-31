@@ -5,13 +5,13 @@ from decouple import config
 
 
 class Config:
-    # Debug mode.
+    # Debug mode
     DEBUG = cast(bool, config("DEBUG", default=False, cast=bool))
 
-    # Update interval (in minutes).
-    UPDATE_INTERVAL = cast(int, config("UPDATE_INTERVAL", default=5, cast=int))
+    # Update interval (in minutes)
+    UPDATE_INTERVAL = cast(int, config("UPDATE_INTERVAL", default=2, cast=int))
 
-    # Spotify refresh token for headless environments.
+    # Spotify refresh token for headless environments
     SPOTIFY_REFRESH_TOKEN = cast(Optional[str], config("SPOTIFY_REFRESH_TOKEN", default=None))
 
     # Spotify credentials
@@ -71,14 +71,11 @@ class Fonts:
     # Base font path
     FONT_PATH = "app/assets/fonts/"
 
-    # Fira code
     FIRA_REGULAR = FONT_PATH + "FiraCode-Regular.ttf"
     FIRA_MEDIUM = FONT_PATH + "FiraCode-Medium.ttf"
     FIRA_SEMIBOLD = FONT_PATH + "FiraCode-SemiBold.ttf"
 
-    # Poppins
     POPPINS_REGULAR = FONT_PATH + "Poppins-Regular.ttf"
     POPPINS_SEMIBOLD = FONT_PATH + "Poppins-SemiBold.ttf"
 
-    # Arial
     ARIAL = FONT_PATH + "arial-unicode-ms.ttf"

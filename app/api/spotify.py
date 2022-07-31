@@ -15,7 +15,7 @@ PYTHON_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.versio
 
 
 class Spotify:
-    RETRY_ATTEMPTS = 5
+    RETRY_ATTEMPTS = 3
     USER_AGENT = f"Spotify Twitter Banner ({Config.GITHUB_REPO_URL}) - Python/{PYTHON_VERSION} Requests/{requests.__version__}"
 
     def __init__(self, client_id: str, client_secret: str) -> None:
@@ -25,8 +25,8 @@ class Spotify:
         self.bearer_info = None
         self.refresh_token = self.load_refresh_token()
 
-    # Get bearer info.
     def get_bearer_info(self) -> Dict[str, Any]:
+        """Get the bearer info containing the access token to access the spotify endpoints."""
         if not self.refresh_token:
             raise Exception("No refresh token provided.")
 
@@ -53,8 +53,10 @@ class Spotify:
 
         return info
 
-    # Function to get the refresh token from code.
     def get_refresh_token(self, code: str) -> Dict[str, Any]:
+        """Get the spotify refresh token using the `code` obtained after the OAuth2 authorization
+        flow present in the URL.
+        """
         token = self.generate_base64_token()
 
         headers = {
@@ -70,43 +72,44 @@ class Spotify:
 
         return response.json()
 
-    # Function to handle loading refresh token.
     def load_refresh_token(self) -> str:
-        # Load refresh token from environment variable.
+        """Load the refresh token.
+
+        Following strategies are used to load it:
+        - If the refresh token is provided in the `.env` file, load it
+        - Next, try loading from the JSON config file specified
+        - If still not found, Do the OAuth2 authorization flow, get the code form the URL
+          and save it to the config file.
+        """
         if Config.SPOTIFY_REFRESH_TOKEN is not None:
             return Config.SPOTIFY_REFRESH_TOKEN
 
-        # If not in environmental vars, load from JSON.
         with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "r") as file:
             token = json.load(file)
 
-        # Check if refresh token exists, If not do the workflow.
+        # Check if refresh token exists, If not do the workflow
         if "refresh_token" not in token:
             logger.info("No refresh token found. Please follow the steps to get the refresh token.")
 
-            # Generate OAuth URL.
             url = generate_oauth_url(self.client_id, Config.SPOTIFY_REDIRECT_URI, Config.SCOPES)
             print(f"Please visit the following URL to authorize the application: {url}")
 
-            # Wait for user to input code.
+            # Get the `code` returned in the URL.
             code = input("Enter the value of code from URL query parameter: ")
 
             if not code:
-                raise Exception("No code provided.")
+                raise ValueError("No code provided.")
 
-            # Get refresh token.
+            # Get refresh token, and calculate the necessary parameters
             token = self.get_refresh_token(code)
 
-            # Calculate expired time
             expires_in = int(token["expires_in"])
             expires_at = time.time() + expires_in
             token["expires_at"] = expires_at
 
-            # Save refresh token.
             with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "w") as file:
                 json.dump(token, file)
 
-        # Return refresh token.
         return token["refresh_token"]
 
     def fetch(
@@ -144,20 +147,26 @@ class Spotify:
             if response.status_code == 200:
                 return response.json()
 
-            # Check if the request was a 429.
+            try:
+                data = json.loads(response.text)
+            except json.decoder.JSONDecodeError:
+                data = None
+
+            if 200 <= response.status_code < 300:
+                return data
+
+            # Handle ratelimited requests
             if response.status_code == 429:
-                # Get Retry-After header, and wait for it to clear.
                 retry_after = int(response.headers["Retry-After"])
 
-                # Wait for the Retry-After header to clear.
-                logger.info(f"Ratelimited. Waiting for {retry_after} seconds.")
+                logger.info(f"Ratelimited, Waiting for {retry_after} seconds.")
                 time.sleep(retry_after)
 
                 continue
 
-            # Check if the request was a 401.
+            # Handle access token expired
             if response.status_code == 401:
-                logger.info("Bearer info expired. Refreshing.")
+                logger.info("Bearer info expired, Refreshing.")
                 self.bearer_info = self.get_bearer_info()
 
                 continue
@@ -166,17 +175,17 @@ class Spotify:
             if response.status_code >= 500:
                 continue
 
-            # Check if the request was a 404.
+            # Route not found error - This won't happen most of the times
             if response.status_code == 404:
-                logger.warning(f"Failed to fetch: {route.url}. Route not found.")
+                logger.warning(f"Failed to fetch: {route.url} - Route not found.")
                 return None
 
-            # Check if the request was a 403.
+            # If it's an internal route for the app
             if response.status_code == 403:
-                logger.warning(f"Failed to fetch: {route.url}. Forbidden route.")
+                logger.warning(f"Failed to fetch: {route.url} - Forbidden route.")
                 return None
 
-    # Utility methods.
+    # Utility methods
     def generate_base64_token(self) -> str:
         return base64.b64encode(f"{self.client_id}:{self.client_secret}".encode()).decode("utf-8")
 
@@ -186,9 +195,9 @@ class Spotify:
 
         return url
 
-    # Main endpoints.
+    # Main endpoints
     def currently_playing(self) -> Optional[Dict[str, Any]]:
-        """Get the currently playing song."""
+        """Get the currently playing song/podcast."""
         route = Route(
             "GET",
             self._form_url("/me/player/currently-playing", {
