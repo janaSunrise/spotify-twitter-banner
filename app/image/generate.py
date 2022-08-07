@@ -48,7 +48,7 @@ def generate_image(
     ]
 
     # Create an image.
-    img = Image.new("RGB", (1500, 500), (18, 18, 18))
+    img = Image.new("RGB", (1500, 500), (10, 14, 18))
     draw = ImageDraw.Draw(img)
 
     # Load fonts

@@ -25,7 +25,7 @@ class Config:
     TWITTER_ACCESS_TOKEN_SECRET = cast(str, config("TWITTER_ACCESS_TOKEN_SECRET"))
 
     # Redirect URI, Used for OAuth.
-    SPOTIFY_REDIRECT_URI = "http://localhost:8888/callback"
+    SPOTIFY_REDIRECT_URI = cast(str, config("SPOTIFY_REDIRECT_URI", default="http://localhost:8888/callback"))
 
     # Spotify scopes
     SCOPES = [

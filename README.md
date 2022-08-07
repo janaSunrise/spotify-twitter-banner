@@ -1,6 +1,6 @@
 # Spotify Twitter Banner
 
-Dynamic Twitter banner to show off your spotify status. Banner updated every 5 minutes.
+Dynamic Twitter banner to display your spotify status, elegantly.
 
 ## Installation and Usage
 
@@ -16,7 +16,9 @@ pipenv sync -d
 
 - Go to the developer panel at spotify. [Panel URL](https://developer.spotify.com).
 - Create an app, Specify the name, and description.
-- Add `http://localhost:8888/callback` to the Callback URLs.
+- Add `http://localhost:8888/callback` or any local URL to the callback URLs.
+- **(Optional step)** If the callback URL is not `http://localhost:8888/callback`, set the `.env` variable
+  `SPOTIFY_REDIRECT_URI` to the callback URL.
 - Take a note of the Client ID, and Client Secret for setting up `.env`
 
 ### Setting up Twitter API
@@ -28,8 +30,8 @@ pipenv sync -d
 
 ### Environmental variables
 
-To run this project, you need to properly configure environmental variables. Configure the environmental
-variables by renaming the `.env.example` file to `.env` with the respective values.
+To run this project, you will need to properly configure environmental variables. Configure them by renaming
+the `.env.example` file to `.env` and setting the values.
 
 ### Authentication with Spotify
 
@@ -41,21 +43,19 @@ code from the URL and paste it in the terminal.
 ### Configuration.
 
 All the configuration for the app is located in the `config.py` file. To maintain clean configuration, They
-have been split into 3 classes. You can configure the settings in the config file, as you wish and also ensure
-that the variables are set properly, and they work.
+have been split into 3 classes. All the core configuration needed to customize and run the app is loaded
+from the environmental variables.
 
-Along with that, you can also change the interval of the banner update, in `__main__.py` where the `sleep` is run.
-
-To sum it up, Here is the workflow on setting up:
+Here is the workflow on setting up:
 
 - Install the dependencies.
 - Set up the Spotify API.
 - Set up the Twitter API.
-- Configure settings and interval as you like.
+- Configure the environmental variables to your liking.
 
 ### 🚀 Run the app!
 
-Great! You're all set. Now, Just run the app using,
+Great! You're all set. Now, run the app using,
 
 ```sh
 pipenv run start
@@ -69,19 +69,22 @@ There are scripts located in the `scripts` directory meant for use during develo
 testing the generation of image, or uploading banner to twitter. Make sure of using them when developing
 the app. Use these to test the specific feature you have made change in.
 
-Here's how you can use them:
+There are scripts available for user usage, or development purposes.
 
-- Activate the virtual environment using `pipenv shell`.
-- Run the specific script, you want to using `python -m scripts.<script-name>`. For example, to test the
-  image generation, you can run `python -m scripts.generate_image`.
+Here are the scripts that you can use for development:
 
-If you're interested in contributions, scroll down to the Contributing section. You can find more information
+- **Generate Image** - `python -m scripts.generate_image`
+- **Update banner** - `python -m scripts.update_banner`
+
+NOTE: The `update_refresh_token` script is is meant for user usage to get their refresh token.
+
+If you're interested in contributing, scroll down to the contributing section. You can find more information
 about getting started.
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome. After cloning & setting up project locally, you can just submit
-a PR to this repo, and it will be deployed once it's accepted.
+Contributions, issues and feature requests are welcome. After cloning & setting up project locally, you can
+just submit a PR to this repo, and it will be deployed once it's accepted.
 
 ⚠ It’s good to have descriptive commit messages, or PR titles so that other contributors can understand about your
 commit or the PR Created. Read [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.3/) before
