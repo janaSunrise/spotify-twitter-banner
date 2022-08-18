@@ -1,5 +1,4 @@
-import os
-from typing import Optional, cast
+from typing import cast
 
 from decouple import config
 
@@ -12,7 +11,7 @@ class Config:
     UPDATE_INTERVAL = cast(int, config("UPDATE_INTERVAL", default=2, cast=int))
 
     # Spotify refresh token for headless environments
-    SPOTIFY_REFRESH_TOKEN = cast(Optional[str], config("SPOTIFY_REFRESH_TOKEN", default=None))
+    SPOTIFY_REFRESH_TOKEN = cast(str, config("SPOTIFY_REFRESH_TOKEN"))
 
     # Spotify credentials
     SPOTIFY_CLIENT_ID = cast(str, config("SPOTIFY_CLIENT_ID"))
@@ -33,9 +32,6 @@ class Config:
         "user-read-recently-played",
         "user-top-read"
     ]
-
-    # Path to store the refresh token
-    SPOTIFY_REFRESH_TOKEN_PATH = os.path.expanduser("~/.spotify_refresh_token")
 
     # Path to save the spotify banner image.
     IMAGE_PATH = "spotify-banner.jpeg"

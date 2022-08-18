@@ -9,7 +9,6 @@ from loguru import logger
 
 from .route import Route
 from ..config import Config
-from ..utils import generate_oauth_url
 
 PYTHON_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
@@ -23,7 +22,7 @@ class Spotify:
         self.client_secret = client_secret
 
         self.bearer_info = None
-        self.refresh_token = self.load_refresh_token()
+        self.refresh_token = Config.SPOTIFY_REFRESH_TOKEN
 
     def get_bearer_info(self) -> Dict[str, Any]:
         """Get the bearer info containing the access token to access the spotify endpoints."""
@@ -71,46 +70,6 @@ class Spotify:
         response = requests.post("https://accounts.spotify.com/api/token", headers=headers, data=data)
 
         return response.json()
-
-    def load_refresh_token(self) -> str:
-        """Load the refresh token.
-
-        Following strategies are used to load it:
-        - If the refresh token is provided in the `.env` file, load it
-        - Next, try loading from the JSON config file specified
-        - If still not found, Do the OAuth2 authorization flow, get the code form the URL
-          and save it to the config file.
-        """
-        if Config.SPOTIFY_REFRESH_TOKEN is not None:
-            return Config.SPOTIFY_REFRESH_TOKEN
-
-        with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "r") as file:
-            token = json.load(file)
-
-        # Check if refresh token exists, If not do the workflow
-        if "refresh_token" not in token:
-            logger.info("No refresh token found. Please follow the steps to get the refresh token.")
-
-            url = generate_oauth_url(self.client_id, Config.SPOTIFY_REDIRECT_URI, Config.SCOPES)
-            print(f"Please visit the following URL to authorize the application: {url}")
-
-            # Get the `code` returned in the URL.
-            code = input("Enter the value of code from URL query parameter: ")
-
-            if not code:
-                raise ValueError("No code provided.")
-
-            # Get refresh token, and calculate the necessary parameters
-            token = self.get_refresh_token(code)
-
-            expires_in = int(token["expires_in"])
-            expires_at = time.time() + expires_in
-            token["expires_at"] = expires_at
-
-            with open(Config.SPOTIFY_REFRESH_TOKEN_PATH, "w") as file:
-                json.dump(token, file)
-
-        return token["refresh_token"]
 
     def fetch(
         self,
