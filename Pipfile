@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "==2.27.1"
-pillow = "==9.1.1"
+pillow = "==9.3.0"
 loguru = "==0.6.0"
 python-decouple = "==3.6"
 tweepy = "==4.8.0"
