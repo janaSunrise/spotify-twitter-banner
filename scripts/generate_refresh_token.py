@@ -1,10 +1,22 @@
 import base64
-from typing import Any, Dict
+from typing import Any, Dict, cast
 
 import requests
+from decouple import config
 
-from app.config import Config
 from app.utils import generate_oauth_url
+
+
+class Config:
+    SPOTIFY_CLIENT_ID = cast(str, config("SPOTIFY_CLIENT_ID"))
+    SPOTIFY_CLIENT_SECRET = cast(str, config("SPOTIFY_CLIENT_SECRET"))
+    SPOTIFY_REDIRECT_URI = cast(str, config("SPOTIFY_REDIRECT_URI", default="http://localhost:8888/callback"))
+
+    SCOPES = [
+        "user-read-currently-playing",
+        "user-read-recently-played",
+        "user-top-read"
+    ]
 
 
 def get_refresh_token(code: str) -> Dict[str, Any]:

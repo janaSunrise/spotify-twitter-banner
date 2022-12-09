@@ -73,5 +73,3 @@ class Fonts:
 
     POPPINS_REGULAR = FONT_PATH + "Poppins-Regular.ttf"
     POPPINS_SEMIBOLD = FONT_PATH + "Poppins-SemiBold.ttf"
-
-    ARIAL = FONT_PATH + "arial-unicode-ms.ttf"
